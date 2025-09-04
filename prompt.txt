@@ -1,0 +1,68 @@
+Take Flowise’s UI code from packages/ui/src/pages/FlowPage and its node definitions (packages/ui/src/components/nodes/) and refactor it into my project’s StudioPage.jsx.
+
+Requirements:
+
+Frontend (React/JSX)
+
+Use ReactFlow for the canvas.
+
+Include drag-and-drop nodes: Agent, Tool, Supervisor (or similar).
+
+Include a sidebar (PaletteSidebar) with node types.
+
+Include a properties panel (PropertiesPanel) to edit node data.
+
+Add a Save & Deploy button that sends flows to backend via API.
+
+Keep everything in JSX, strip any TypeScript annotations from Flowise code.
+
+Maintain local state for nodes, edges, and selected node.
+
+Backend (FastAPI/Python)
+
+Implement separate endpoints for:
+
+POST /api/save-supervisor-profile → saves supervisor node info
+
+POST /api/save-assistants-config → saves agent nodes + connected tools
+
+GET /api/get-flow/{flow_id} → fetch flow for editing
+
+POST /api/run-flow/{flow_id} → executes flow and returns results
+
+Backend stores flows in database (or in-memory for prototype) and returns JSON responses.
+
+Should not mix frontend logic in Python; all ReactFlow code remains in frontend.
+
+Integration
+
+Frontend calls FastAPI endpoints via Axios (or fetch) with JWT token headers.
+
+All flow saving, loading, and running happens via backend.
+
+Frontend UI should remain interactive and fully drag-and-drop.
+
+Deliverables
+
+StudioPage.jsx (with ReactFlow + Sidebar + PropertiesPanel + Save button)
+
+CustomNodes.jsx (AgentNode, ToolNode, SupervisorNode)
+
+PaletteSidebar.jsx
+
+PropertiesPanel.jsx
+
+FastAPI endpoints in studio.py (or routes folder) with JSON payload handling
+
+Goal:
+The final StudioPage should feel like Flowise Studio, but use your FastAPI backend. Frontend and backend are fully separated. All TypeScript from Flowise should be stripped to JSX/JS.
+
+⚡ Notes for Implementation
+
+Frontend: ReactFlow handles nodes/edges, onDrop, onConnect, onNodesChange, etc.
+
+Node Data: Every node has data object; Supervisor node has system_message; Agent nodes connect to Tool nodes.
+
+Backend: Receives JSON payload, validates nodes and edges, stores flow, optionally triggers execution.
+
+Security: Use JWT (Authorization: Bearer token) in Axios calls.
